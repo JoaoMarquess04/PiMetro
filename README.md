@@ -1,3 +1,16 @@
-# PiMetro
+## Instruções de Instalação
 
-O trabalho propõe o desenvolvimento de um protótipo de sistema multiplataforma, baseado em visão computacional e inteligência artificial, para o monitoramento automatizado de canteiros de obras do Metrô de São Paulo. A proposta busca modernizar o processo de fiscalização, atualmente dependente de métodos analógicos e verificações presenciais, por meio da integração entre modelagem BIM, captura de realidade e análise visual assistida por machine learning.
+### 1. Clone o repositório com a branch de front-end
+```bash
+git clone --single-branch --branch front https://github.com/JoaoMarquess04/PiMetro.git PiMetro-front
+```
+
+### 2. Acesse a pasta do projeto
+```bash
+cd PiMetro-front
+```
+
+### 3. Inicie a aplicação web
+```bash
+npm run dev
+```
