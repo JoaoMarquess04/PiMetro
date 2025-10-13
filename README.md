@@ -52,9 +52,9 @@ venv\Scripts\activate
 pip install -r ..\requirements.txt
 ```
 
-### 6. Rodar o arquivo
+### 6. Rodar o servidor back-end
 ```bash
-python main.py
+uvicorn main:app --reload
 ```
 
 ### 7. Inicie a aplicação web
