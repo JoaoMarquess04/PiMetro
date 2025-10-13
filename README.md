@@ -17,7 +17,7 @@ Antes de começar, certifique-se de ter instalado:
 
 ## 🚀 Instruções de Instalação
 
-### 1. Clone o repositório com a branch de front-end
+### 1. Clone o repositório
 ```bash
 git clone https://github.com/JoaoMarquess04/PiMetro.git
 ```
