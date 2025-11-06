@@ -1,20 +1,19 @@
 // import './App.css'
-import Envio from './Envio'
-import Card from './components/Card.tsx'
-import NavBar from './components/NavBar.tsx'
-import '@fortawesome/fontawesome-free/css/all.min.css'
+import { HashRouter as Router, Routes, Route} from 'react-router-dom'
+import Dashboard from './paginas/dashboard.tsx'
+import Casos from './paginas/casos.tsx'
+import Configuracoes from './paginas/configuracoes.tsx'
+import tituloPag from './metodos/tituloPag'
 
 function App() {
-
   return (
-    <div className='flex'>
-      <NavBar />
-      <div className='flex'>
-        <Card texto='Obras' icone='hammer' footer='Casos registrados' />
-        <Card texto='Este mês' icone='chart-line' footer='Novos casos' />
-        <Card texto='Últimas 24h' icone='clock' footer='Casos recentes' />
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/casos" element={<Casos />} />
+        <Route path='/configuracoes' element={<Configuracoes />} />
+      </Routes>
+    </Router>
   )
 }
 

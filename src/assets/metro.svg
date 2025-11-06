@@ -3,14 +3,17 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- License: CC0. Made by SVG Repo: https://www.svgrepo.com/svg/91256/sao-paulo-metro-logo -->
 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	fill='#001489' width="91.33px" height="91.33px" viewBox="0 0 91.33 91.33" style="enable-background:new 0 0 91.33 91.33;" xml:space="preserve"
-	>
-<g>
-	<g>
-		<polygon points="39.969,64.02 39.969,26.897 21.406,45.457 		"/>
-		<polygon points="50.704,65.087 69.923,45.867 50.704,26.651 		"/>
-		<path d="M0.001,0v91.33h91.328V0H0.001z M45.87,85.104l-32.327-32.33l6.905-6.906l-7.317-7.315L45.459,6.226l32.327,32.326
-			l-6.904,6.905l7.316,7.316L45.87,85.104z"/>
-	</g>
-</g>
+	width="91.33px" height="91.33px" viewBox="0 0 91.33 91.33" style="enable-background:new 0 0 91.33 91.33;" xml:space="preserve">
+
+  <!-- Blue background -->
+  <rect width="91.33" height="91.33" fill="#001489" />
+
+  <!-- White central diamond (on top of blue background) -->
+  <path d="M45.87,85.104l-32.327-32.33l6.905-6.906l-7.317-7.315L45.459,6.226l32.327,32.326l-6.904,6.905l7.316,7.316L45.87,85.104z"
+		fill="#ffffff" />
+
+  <!-- Blue arrows inside the white diamond -->
+  <polygon points="39.969,64.02 39.969,26.897 21.406,45.457" fill="#001489" />
+  <polygon points="50.704,65.087 69.923,45.867 50.704,26.651" fill="#001489" />
+
 </svg>

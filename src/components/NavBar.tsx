@@ -1,15 +1,22 @@
-import { useState } from 'react'
+import { useMemo } from 'react'
 import Botao from './ui/botao'
 import logo from '../assets/metro.svg'
+import { Link, useLocation } from 'react-router-dom'
 
 function Navbar() {
-    const [activeIndex, setActiveIndex] = useState<number | null>(0)
+    const { pathname } = useLocation()
+
+    const activeIndex = useMemo(() => {
+        if (pathname === '/') return 0
+        if (pathname === '/casos') return 1
+        if (pathname === '/configuracoes') return 2
+        return null
+    }, [pathname])
 
     return (
-        <div className="border-r-1 border-gray-200 w-60 min-h-screen bg-gray-100">
-
+        <div className="sticky border-r-1 border-gray-200 w-60 min-h-screen bg-gray-100">
             <div className="flex">
-                <img src={logo} alt="Metro logo" className="w-10"/>
+                <img src={logo} alt="Metro logo" className="w-10" />
                 <div className='bg-[#001489] w-[100%]'></div>
             </div>
 
@@ -18,16 +25,19 @@ function Navbar() {
                 <nav className="px-2">
                     <ul>
                         <li>
-                            <Botao icone="house" texto="Dashboard" isActive={activeIndex === 0} onSelect={() => setActiveIndex(0)}/>
+                            <Link to="/">
+                                <Botao icone="house" texto="Dashboard" isActive={activeIndex === 0} />
+                            </Link>
                         </li>
                         <li>
-                            <Botao icone="upload" texto="Upload" isActive={activeIndex === 1} onSelect={() => setActiveIndex(1)}/>
+                            <Link to="/casos">
+                                <Botao icone="wrench" texto="Casos" isActive={activeIndex === 1} />
+                            </Link>
                         </li>
                         <li>
-                            <Botao icone="wrench" texto="Obras" isActive={activeIndex === 2} onSelect={() => setActiveIndex(2)}/>
-                        </li>
-                        <li>
-                            <Botao icone="gear" texto="Configurações" isActive={activeIndex === 3} onSelect={() => setActiveIndex(3)}/>
+                            <Link to="/configuracoes">
+                                <Botao icone="gear" texto="Configurações" isActive={activeIndex === 2} />
+                            </Link>
                         </li>
                     </ul>
                 </nav>

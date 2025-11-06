@@ -2,16 +2,14 @@ type CardProps = {
     texto: string,
     icone?: string,
     footer?: string
+    contador?: React.ReactNode
 }
 
-function Card({ texto, icone, footer }: CardProps) {
-
-    let contador = 0;
+function Card({ texto, icone, footer, contador = 0 }: CardProps) {
 
     return (
-        <div className="px-2">
-
-            <div className="border-2 border-gray-200 rounded-xl max-h-40 w-75 max-w-75">
+        <div className=" h-40 max-h-40 w-full">
+            <div className="border-2 border-gray-200 rounded-xl h-full w-full">
                 <div className="p-4 flex flex-col justify-between h-full">
                     <article className="flex justify-between">
                         <h4>{texto}</h4>
