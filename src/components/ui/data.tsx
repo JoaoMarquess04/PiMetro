@@ -1,12 +1,11 @@
 type DataProps = {
-    cor?: string
+    cor?: string;
+    data?: string;
 }
 
-function Data({ cor }: DataProps) {
-    const hoje = new Date();
-    const data = hoje.toLocaleDateString('en-GB');
-
-    return <p className={`text-[${cor}]`}>{data}</p>
+function Data({ cor, data }: DataProps) {
+    const displayDate = data || new Date().toLocaleDateString('en-GB');
+    return <p style={{ color: cor }}>{displayDate}</p>
 }
 
 export default Data

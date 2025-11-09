@@ -34,7 +34,6 @@ function Dashboard() {
         <Container titulo='Obras Recentes' subtitulo='Últimas obras adicionadas ao sistema'>
           <Contador>
             <div className='space-y-4'>
-
               {contadorChildren}
             </div>
           </Contador>
