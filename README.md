@@ -10,6 +10,7 @@ A proposta busca **modernizar o processo de fiscalização**, atualmente depende
 
 Antes de começar, certifique-se de ter instalado:
 
+- [Git](https://git-scm.com/install)
 - [Python 3.10+](https://www.python.org/downloads/)
 - [Node.js 18+](https://nodejs.org/en/download/)
 - [Microsoft C/C++ Build Tools](https://visualstudio.microsoft.com/pt-br/downloads/?q=build+tools)
