@@ -3,11 +3,14 @@ import logo from '../assets/metro.svg'
 import { useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../../firebaseconfig";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import tituloPag from '../metodos/tituloPag';
 
 // Validador simples de e-mail
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
 function Login() {
+  tituloPag('Login');
+
   const navigate = useNavigate();
   const location = useLocation();
   const [checking, setChecking] = useState(true);
