@@ -43,7 +43,7 @@ function CardCasos({ add = false, case: caseData, onChanged }: CardCasosProps) {
       <div>
         <article
           onClick={() => setShowModal(true)}
-          className='border-2 flex flex-col border-dashed border-gray-200 w-65 overflow-hidden rounded-xl h-full justify-center items-center cursor-pointer bg-gray-50'
+          className='border-2 flex flex-col border-dashed border-gray-200 w-65 overflow-hidden rounded-xl min-h-80 h-full justify-center items-center cursor-pointer bg-gray-50'
         >
           <h1 className='text-6xl text-gray-400'>+</h1>
         </article>

@@ -70,18 +70,13 @@ function Login() {
   
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900">
+    <div className="flex min-h-screen text-slate-900 bg-gradient-to-t from-white to-[#001489]">
       {/* blobs de fundo */}
       <div className="absolute inset-0 -z-10 opacity-30 [mask-image:radial-gradient(closest-side,black,transparent)]">
         <div className="absolute -top-20 -left-20 h-96 w-96 rounded-full bg-blue-400 blur-3xl" />
         <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-indigo-400 blur-3xl" />
       </div>
-
-      <header className="flex items-center justify-between px-6 py-4">
-        <h1 className="text-lg font-semibold tracking-tight">Login</h1>
-      </header>
-
-      <main className="mx-auto grid max-w-lg place-items-center px-4 pb-24 pt-6">
+      <main className="mx-auto grid w-200 max-w-lg place-items-center px-4 pb-24 pt-6 align-middle">
         <section className="w-full rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-xl backdrop-blur-sm">
           <div className="mb-6">
             <div className="flex items-center justify-center"><img src={logo} alt="Metro logo" className="w-20" /></div>
