@@ -19,6 +19,14 @@ Antes de começar, certifique-se de ter instalado:
 
 ## 🚀 Instruções de Instalação
 
+## 🪟 Observação para Windows (PowerShell)
+
+Se você estiver usando **PowerShell** no Windows e tiver problemas para executar scripts, ajuste a política de execução **apenas para o seu usuário** com:
+
+```powershell
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
 ### 1. Clone o repositório
 ```bash
 git clone https://github.com/JoaoMarquess04/PiMetro.git
