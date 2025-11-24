@@ -53,6 +53,7 @@ function Form({ onDone, mode = "create", caseData }: FormProps) {
         setError(null);
 
         // 👀 loga a URL e método no console para depuração
+        
         console.log("[Form submit]", httpMethod, safeAction);
 
         const xhr = new XMLHttpRequest();
@@ -64,7 +65,7 @@ function Form({ onDone, mode = "create", caseData }: FormProps) {
             setTimeout(() => onDone?.(), 200);
           } else {
             let extra = "";
-            try { extra = xhr.responseText ? ` — ${xhr.responseText}` : ""; } catch {}
+            try { extra = xhr.responseText ? ` — ${xhr.responseText}` : ""; } catch { }
             setError(`Upload failed: ${xhr.status} ${xhr.statusText}${extra}`);
           }
         };
@@ -102,34 +103,37 @@ function Form({ onDone, mode = "create", caseData }: FormProps) {
         className="flex flex-col w-full space-y-4"
       >
         {/* Upload de IMAGEM */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Imagem</label>
-          {isEdit && caseData?.img_path && (
-            <p className="text-xs text-gray-500">
-              Atual: <span className="break-all">{caseData.img_path}</span>
-            </p>
-          )}
-          <Upload
-            type="image"
-            initialPreview={caseData?.img_path || null}
-            initialFileName={basename(caseData?.img_path)}
-          />
+        <div className="flex space-x-2">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Imagem</label>
+            {isEdit && caseData?.img_path && (
+              <p className="text-xs text-gray-500">
+                Atual: <span className="break-all">{caseData.img_path}</span>
+              </p>
+            )}
+            <Upload
+              type="image"
+              initialPreview={caseData?.img_path || null}
+              initialFileName={basename(caseData?.img_path)}
+            />
+          </div>
+
+          {/* Upload de IFC */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium">IFC</label>
+            {isEdit && caseData?.ifc_path && (
+              <p className="text-xs text-gray-500">
+                Atual: <span className="break-all">{caseData.ifc_path}</span>
+              </p>
+            )}
+            <Upload
+              type="ifc"
+              initialPreview={null}
+              initialFileName={basename(caseData?.ifc_path)}
+            />
+          </div>
         </div>
 
-        {/* Upload de IFC */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium">IFC</label>
-          {isEdit && caseData?.ifc_path && (
-            <p className="text-xs text-gray-500">
-              Atual: <span className="break-all">{caseData.ifc_path}</span>
-            </p>
-          )}
-          <Upload
-            type="ifc"
-            initialPreview={null}
-            initialFileName={basename(caseData?.ifc_path)}
-          />
-        </div>
 
         {/* Campos de texto */}
         <div className="pt-2">
@@ -148,7 +152,7 @@ function Form({ onDone, mode = "create", caseData }: FormProps) {
           <textarea
             name="desc"
             defaultValue={defaultDesc}
-            className="px-2 py-2 min-h-24 rounded-lg border-2 border-gray-200 focus:outline-none hover:bg-gray-50"
+            className="px-2 py-2 min-h-24 rounded-lg border-2 border-gray-200 focus:outline-none hover:bg-gray-50 w-full"
             placeholder="Insira a descrição aqui..."
           />
         </div>

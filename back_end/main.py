@@ -192,19 +192,23 @@ def get_case_row(id_: int):
     conn.close()
     return row
 
-def update_case_row(id_: int, caso: Optional[str], desc: Optional[str], img_path: Optional[str], ifc_path: Optional[str]):
+def update_case_row(id_: int, caso: Optional[str], desc: Optional[str],
+                    img_path: Optional[str], ifc_path: Optional[str],
+                    progress_pct: Optional[float] = None): # <-- Novo parâmetro
     row = get_case_row(id_)
     if not row: return False
-    _, old_caso, old_desc, prog, old_img, old_ifc, up = row
+    _, old_caso, old_desc, old_prog, old_img, old_ifc, up = row # Renomeado prog para old_prog
     new_caso = caso if caso is not None else old_caso
     new_desc = desc if desc is not None else old_desc
     new_img = img_path if img_path is not None else old_img
     new_ifc = ifc_path if ifc_path is not None else old_ifc
+    new_prog = progress_pct if progress_pct is not None else old_prog # Usa novo progresso ou mantém o antigo
+
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("""
-        UPDATE submissions SET caso=?, descricao=?, img_path=?, ifc_path=? WHERE id=?
-    """, (new_caso, new_desc, new_img, new_ifc, id_))
+        UPDATE submissions SET caso=?, descricao=?, progress_pct=?, img_path=?, ifc_path=? WHERE id=?
+    """, (new_caso, new_desc, new_prog, new_img, new_ifc, id_)) # <-- SQL Atualizado
     conn.commit()
     conn.close()
     return True
@@ -475,23 +479,30 @@ async def update_caso(
     request: Request,
     img: Optional[UploadFile] = File(None),
     ifc: Optional[UploadFile] = File(None),
+    ignore_mep: Optional[str] = Form("true"), # Capturar para recalculo
     caso: Optional[str] = Form(None),
     desc: Optional[str] = Form(None),
 ):
+    form = await request.form()
+    ignore_mep_bool = str(ignore_mep or form.get("ignore_mep") or "true").lower() in {"1","true","on","yes"}
+
     row = get_case_row(id)
     if not row:
         raise HTTPException(404, "Caso não encontrado")
-    _, old_caso, _, _, old_img, old_ifc, _ = row
+    _, old_caso, _, old_prog, old_img, old_ifc, _ = row
 
-    # pasta do caso baseada no nome atual (ou novo, se vier)
+    # Pasta do caso
     use_name = caso if (caso and caso.strip()) else old_caso or "case"
     case_dir = os.path.join(_DB_DIR, f"case_{slugify(use_name)}")
     os.makedirs(case_dir, exist_ok=True)
 
     new_img_path = None
     new_ifc_path = None
-
-    # salva novos arquivos se enviados
+    
+    # Flag para recalcular
+    recalculate = False
+    
+    # Salva novos arquivos se enviados, replicando a lógica de /teste para temporários e permanentes
     if img is not None and img.filename:
         with NamedTemporaryFile(delete=False, suffix=os.path.splitext(img.filename)[1]) as tf:
             shutil.copyfileobj(img.file, tf)
@@ -499,7 +510,8 @@ async def update_caso(
         final_img = os.path.join(case_dir, f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{os.path.basename(img.filename)}")
         shutil.move(tmp, final_img)
         new_img_path = final_img
-
+        recalculate = True
+    
     if ifc is not None and ifc.filename:
         with NamedTemporaryFile(delete=False, suffix=os.path.splitext(ifc.filename)[1]) as tf:
             shutil.copyfileobj(ifc.file, tf)
@@ -507,11 +519,48 @@ async def update_caso(
         final_ifc = os.path.join(case_dir, os.path.basename(ifc.filename))
         shutil.move(tmp, final_ifc)
         new_ifc_path = final_ifc
+        recalculate = True
 
-    ok = update_case_row(id, caso, desc, new_img_path, new_ifc_path)
+    # --- Lógica de Recálculo ---
+    updated_progress_pct = None
+    
+    if recalculate:
+        # Determina os caminhos a usar (novo arquivo ou o antigo)
+        calc_img_path = new_img_path if new_img_path else old_img
+        calc_ifc_path = new_ifc_path if new_ifc_path else old_ifc
+        
+        try:
+            # 1. Pesos IFC
+            weights_by_cat, totals_by_cat = build_ifc_weights(calc_ifc_path, ignore_mep=ignore_mep_bool)
+            
+            if weights_by_cat:
+                # 2. Detecção YOLO
+                counts_strict, counts_lenient, generic_hits = detect_photo_dual(
+                    YOLO_WEIGHTS, calc_img_path, YOLO_CLASSES, conf_strict=0.22, conf_lenient=0.03, imgsz=1920
+                )
+                
+                # 3. Calcular progresso
+                progress_pct, ratios = compute_progress_soft(
+                    weights_by_cat, totals_by_cat, counts_strict, counts_lenient,
+                    beta_lenient=0.70, eps_fallback=0.12, generic_hits=generic_hits
+                )
+                ratios = apply_rail_prior(ratios, counts_strict, counts_lenient, boost=0.08)
+                updated_progress_pct = round(progress_pct, 1)
+
+            else:
+                updated_progress_pct = 0.0 # Nenhum elemento mapeado no IFC
+                
+        except Exception as e:
+            # Em caso de falha no recálculo, mantém o progresso antigo
+            print(f"Erro durante o recálculo de progresso para o caso {id}: {e}")
+            # updated_progress_pct = None will default to old_prog in update_case_row if not set
+    
+    # Atualiza o banco de dados
+    ok = update_case_row(id, caso, desc, new_img_path, new_ifc_path, updated_progress_pct)
     if not ok:
         raise HTTPException(500, "Falha ao atualizar")
 
+    # Retorna a linha atualizada (agora com o novo progress_pct)
     row2 = get_case_row(id)
     _, caso2, desc2, prog2, img2, ifc2, up2 = row2
     img_url, ifc_url = _public_urls(request, img2, ifc2)
