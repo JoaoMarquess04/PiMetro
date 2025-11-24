@@ -13,7 +13,7 @@ Antes de começar, certifique-se de ter instalado:
 - [Git](https://git-scm.com/install)
 - [Python 3.10+](https://www.python.org/downloads/)
 - [Node.js 18+](https://nodejs.org/en/download/)
-- [Microsoft C/C++ Build Tools](https://visualstudio.microsoft.com/pt-br/downloads/?q=build+tools)
+- [Microsoft Visual Studio 2022 C++ Build Tools (Desktop Development with C++)](https://visualstudio.microsoft.com/pt-br/downloads/?q=build+tools)
 
 ---
 
