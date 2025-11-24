@@ -1,13 +1,15 @@
-import React, { useMemo, useState } from "react";
-
-// Login de teste (hardcoded)
-const TEST_EMAIL = "demo@amo.com";
-const TEST_PASSWORD = "SenhaSeguraConfia";
+import React, { useMemo, useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { auth } from "../../firebaseconfig";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 // Validador simples de e-mail
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
 function Login() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [checking, setChecking] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   
@@ -21,6 +23,20 @@ function Login() {
     return true;
   }, [email, password]);
 
+  // Se já houver sessão ativa, redireciona direto para dashboard
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (u) => {
+      if (u) {
+        // Se veio de uma rota protegida, podemos redirecionar de volta
+        const from = (location.state as any)?.from?.pathname || "/dashboard";
+        navigate(from, { replace: true });
+      } else {
+        setChecking(false);
+      }
+    });
+    return () => unsub();
+  }, [navigate, location]);
+
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!valid) return;
@@ -28,19 +44,27 @@ function Login() {
     setError(null);
     setLoading(true);
 
-    // Checagem simples contra o login de teste
-    const ok =
-      email.trim().toLowerCase() === TEST_EMAIL.toLowerCase() &&
-      password === TEST_PASSWORD;
-
-    if (ok) {
-      // redireciona para a página de dashboard
-      window.location.href = "/#/dashboard";
-    } else {
-      setError("E-mail ou senha incorretos.");
-      setLoading(false);
-    }
+    // Autentica com Firebase Auth
+    (async () => {
+      try {
+        await signInWithEmailAndPassword(auth, email.trim(), password);
+        // login OK -> redireciona
+        window.location.href = "/#/dashboard";
+      } catch (error: any) {
+        // Mapear erros comuns do Firebase para mensagens amigáveis
+        const code = error?.code;
+        let message = "Erro ao autenticar. Verifique e-mail e senha.";
+        if (code === "auth/user-not-found") message = "Usuário não encontrado.";
+        else if (code === "auth/wrong-password") message = "Senha incorreta.";
+        else if (code === "auth/invalid-email") message = "E-mail inválido.";
+        else if (code === "auth/too-many-requests") message = "Muitas tentativas. Tente novamente mais tarde.";
+        setError(message);
+        setLoading(false);
+      }
+    })();
   }
+
+  if (checking) return <div className="p-4">Verificando sessão...</div>;
 
   
 

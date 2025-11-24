@@ -28,3 +28,4 @@ back_end/venv/
 back_end/__pycache__/
 back_end/db/
 back_end/*.pt
+.env
