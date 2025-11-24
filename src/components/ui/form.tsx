@@ -104,11 +104,11 @@ function Form({ onDone, mode = "create", caseData }: FormProps) {
       >
         {/* Upload de IMAGEM */}
         <div className="flex space-x-2">
-          <div className="space-y-2">
+          <div className="space-y-2 flex-1">
             <label className="text-sm font-medium">Imagem</label>
             {isEdit && caseData?.img_path && (
-              <p className="text-xs text-gray-500">
-                Atual: <span className="break-all">{caseData.img_path}</span>
+              <p className="text-xs text-gray-500 truncate max-w-xs">
+                Atual: {caseData.img_path}
               </p>
             )}
             <Upload
@@ -119,11 +119,11 @@ function Form({ onDone, mode = "create", caseData }: FormProps) {
           </div>
 
           {/* Upload de IFC */}
-          <div className="space-y-2">
+          <div className="space-y-2 flex-1">
             <label className="text-sm font-medium">IFC</label>
             {isEdit && caseData?.ifc_path && (
-              <p className="text-xs text-gray-500">
-                Atual: <span className="break-all">{caseData.ifc_path}</span>
+              <p className="text-xs text-gray-500 truncate max-w-xs">
+                Atual: {caseData.ifc_path}
               </p>
             )}
             <Upload
@@ -161,7 +161,7 @@ function Form({ onDone, mode = "create", caseData }: FormProps) {
           {!isUploading ? (
             <button
               type="submit"
-              className="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+              className="px-3 py-2 bg-[#001489] text-white rounded hover:bg-blue-700 disabled:opacity-50"
               disabled={isEdit && !editId}
               title={isEdit && !editId ? "Sem ID do caso para editar" : ""}
             >

@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useEffect } from "react";
+import logo from '../assets/metro.svg'
 import { useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../../firebaseconfig";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
@@ -83,6 +84,7 @@ function Login() {
       <main className="mx-auto grid max-w-lg place-items-center px-4 pb-24 pt-6">
         <section className="w-full rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-xl backdrop-blur-sm">
           <div className="mb-6">
+            <div className="flex items-center justify-center"><img src={logo} alt="Metro logo" className="w-20" /></div>
             <h2 className="text-2xl font-bold leading-tight">Entrar</h2>
             <p className="mt-1 text-sm text-slate-600">
               Acesse com seu e-mail e senha.
@@ -156,7 +158,7 @@ function Login() {
             <button
               type="submit"
               disabled={!valid || loading}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white shadow-lg shadow-blue-600/25 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#001489] px-4 py-2 font-semibold text-white shadow-lg shadow-blue-600/25 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
             >
               {loading ? "Entrando…" : "Entrar"}
             </button>
