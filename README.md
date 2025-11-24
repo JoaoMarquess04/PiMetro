@@ -12,6 +12,7 @@ Antes de começar, certifique-se de ter instalado:
 
 - [Python 3.10+](https://www.python.org/downloads/)
 - [Node.js 18+](https://nodejs.org/en/download/)
+- [Microsoft C/C++ Build Tools](https://visualstudio.microsoft.com/pt-br/downloads/?q=build+tools)
 
 ---
 
