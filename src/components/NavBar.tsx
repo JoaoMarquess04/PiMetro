@@ -7,7 +7,7 @@ function Navbar() {
     const { pathname } = useLocation()
 
     const activeIndex = useMemo(() => {
-        if (pathname === '/') return 0
+        if (pathname === '/dashboard') return 0
         if (pathname === '/casos') return 1
         if (pathname === '/configuracoes') return 2
         return null
@@ -25,7 +25,7 @@ function Navbar() {
                 <nav className="px-2">
                     <ul>
                         <li>
-                            <Link to="/">
+                            <Link to="/dashboard">
                                 <Botao icone="house" texto="Dashboard" isActive={activeIndex === 0} />
                             </Link>
                         </li>
